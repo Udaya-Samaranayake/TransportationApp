@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  Image,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
@@ -45,6 +45,11 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* Logo */}
+      <Image
+        source={require("../assets/logo.png")} // Correct relative path to your logo
+        style={styles.logo}
+      />
       <TextInput
         style={styles.input}
         placeholder="Full Name"
@@ -109,7 +114,12 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 16 },
+  container: { flex: 1, justifyContent: "center", alignItems: "center",backgroundColor: "#fff", padding: 16 },
+  logo: {
+    width: 200, // Adjust the size as needed
+    height: 200, // Adjust the size as needed
+    marginBottom: 20,
+  },
   input: {
     width: "100%",
     padding: 12,
@@ -119,7 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   button: {
-    backgroundColor: "#6C63FF",
+    backgroundColor: "#007BFF",
     padding: 12,
     borderRadius: 4,
     alignItems: "center",

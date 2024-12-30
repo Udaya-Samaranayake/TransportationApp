@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Switch,
+  Image,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -37,6 +38,11 @@ const LogIn = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* Logo */}
+      <Image
+        source={require("../assets/logo.png")} // Correct path to the logo image
+        style={styles.logo}
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -109,7 +115,6 @@ const LogIn = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -117,6 +122,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     backgroundColor: "#fff",
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
   },
   input: {
     width: "100%",
@@ -187,6 +197,11 @@ const styles = StyleSheet.create({
   socialButtonsContainer: {
     flexDirection: "row",
     marginTop: 16,
+  },
+  logo: {
+    width: 200,  // Increased width to 200
+    height: 200, // Increased height to 200
+    marginBottom: 20,
   },
   socialButton: {
     width: 40,
