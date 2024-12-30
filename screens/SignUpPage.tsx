@@ -31,20 +31,13 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
     setLoading(true);
     setError("");
 
-    // Mock validation logic
+    // Simple validation logic
     setTimeout(() => {
-      if (
-        fullName === "Udaya Samaranayake" &&
-        email === "test@example.com" &&
-        password === "password" &&
-        password === password
-      ) {
-        // Navigate to Home page with username
-        navigation.navigate("Home", { username: fullName });
+      if (password === confirmPassword && fullName && email && password) {
+        // If valid, navigate to the SignIn page
+        navigation.navigate("LogIn"); // Navigate to SignIn screen after sign-up
       } else {
-        setError(
-          "Invalid credentials! Use: Full Name - Udaya Samaranayake, Email - test@example.com, Password - password."
-        );
+        setError("Passwords do not match or fields are empty.");
       }
       setLoading(false);
     }, 1000);
