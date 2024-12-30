@@ -1,115 +1,311 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from 'react-native';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Alert,
+  StyleSheet,
+  ImageBackground,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
-// Context for managing item click count
-const ClickCountContext = createContext({ count: 0, increment: () => {} });
+type Vehicle = {
+  id: number;
+  make: string;
+  model: string;
+  year: number;
+  vehicleType: string;
+  fuelType?: string;
+  thumbnail: any;
+  price: number;
+  description: string;
+};
 
-const HomePage = () => {
-  const username = 'Udaya Samaranayake'; // Set username directly
-  const [items, setItems] = useState([]);
-  const { count, increment } = useContext(ClickCountContext);
+export default function HomePage() {
+  const router = useRouter();
+  const { username } = useLocalSearchParams();
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [cart, setCart] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch items from API
   useEffect(() => {
-    axios
-      .get('https://fakestoreapi.com/products')
-      .then((response) => setItems(response.data))
-      .catch((error) => console.error(error));
-  }, []); // This ensures that the data fetch happens only once when the component is mounted
+    fetchVehicles();
+  }, []);
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.itemCard}
-      onPress={increment} // Increment click count when an item is clicked
-    >
-      <Image source={{ uri: item.image }} style={styles.itemImage} />
-      <Text style={styles.itemTitle}>{item.title}</Text>
-      <Text style={styles.itemDescription}>{item.description}</Text>
-      <Text style={styles.itemStatus}>${item.price}</Text>
-    </TouchableOpacity>
-  );
+  const fetchVehicles = async () => {
+    try {
+      const makesResponse = await fetch(
+        "https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json"
+      );
+      const makesData = await makesResponse.json();
+
+      const topMakes = ["Honda", "Toyota", "Ford", "BMW", "Mercedes-Benz"];
+
+      let allVehicles: Vehicle[] = [];
+      for (const make of topMakes) {
+        const modelsResponse = await fetch(
+          `https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/${make}?format=json`
+        );
+        const modelsData = await modelsResponse.json();
+
+        const vehicles = modelsData.Results.slice(0, 3).map(
+          (model: any, index: number) => ({
+            id: allVehicles.length + index + 1,
+            make: model.Make_Name,
+            model: model.Model_Name,
+            year: 2024,
+            vehicleType: model.Vehicle_Type || "Not Specified",
+            fuelType: "Gasoline",
+            thumbnail: getVehicleImage(model.Make_Name, model.Model_Name),
+            price: Math.floor(Math.random() * (80000 - 25000) + 25000),
+            description: `The ${model.Make_Name} ${model.Model_Name} combines style, performance, and reliability.`,
+          })
+        );
+
+        allVehicles = [...allVehicles, ...vehicles];
+      }
+
+      setVehicles(allVehicles);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching vehicles:", error);
+      Alert.alert("Error", "Failed to load vehicles. Please try again later.");
+      setLoading(false);
+    }
+  };
+
+  const getVehicleImage = (make: string, model: string): any => {
+    const images: Record<string, any> = {
+      // "Honda Civic": require("../../../assets/images/01.jpg"),
+      // "Honda Accord": require("../../../assets/images/02.jpg"),
+      // "Honda Pilot": require("../../../assets/images/03.jpg"),
+      // "Toyota Scion xA": require("../../../assets/images/04.jpg"),
+      // "Toyota Scion tC": require("../../../assets/images/05.jpg"),
+      // "Toyota Corolla": require("../../../assets/images/06.jpg"),
+      // "Ford Crown Victoria": require("../../../assets/images/07.jpg"),
+      // "Ford Focus": require("../../../assets/images/08.jpg"),
+      // "Ford Fusion": require("../../../assets/images/09.jpg"),
+      // "BMW 128i": require("../../../assets/images/10.jpg"),
+    };
+
+    const key = `${make} ${model}`;
+    return (
+      images[key] ||
+      `https://source.unsplash.com/800x600/?car,${make},${model.replace(
+        / /g,
+        ""
+      )}`
+    );
+  };
+
+  const handleAddToCart = (item: Vehicle) => {
+    setCart((prevCart) => [...prevCart, item]);
+    Alert.alert("Success", `${item.make} ${item.model} added to the cart.`);
+  };
+
+  const handleRemoveFromCart = (itemId: number) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
+    Alert.alert("Removed", "Item has been removed from the cart.");
+  };
+
+  const renderItem = ({ item }: { item: Vehicle }) => {
+    return (
+      <View style={styles.productCard}>
+        <Image source={item.thumbnail} style={styles.productImage} />
+        <View style={styles.productInfo}>
+          <Text style={styles.productTitle}>
+            {item.make} {item.model}
+          </Text>
+          <Text style={styles.productType}>
+            {item.vehicleType} • {item.year}
+          </Text>
+          <Text style={styles.productPrice}>
+            ${item.price.toLocaleString()}
+          </Text>
+
+          <Text style={styles.productDescription} numberOfLines={2}>
+            {item.description}
+          </Text>
+
+          <View style={styles.actionButtons}>
+            <TouchableOpacity
+              onPress={() => handleAddToCart(item)}
+              style={styles.addToCartButton}
+            >
+              <Text style={styles.buttonText}>Add to Cart</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  };
 
   return (
-    <View style={styles.container}>
-      {/* Header displaying username */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Welcome, {username}</Text>
-      </View>
-      <FlatList
-        data={items}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
-      />
-      <TouchableOpacity style={styles.floatingButton}>
-        <Text style={styles.floatingButtonText}>Clicks: {count}</Text>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground
+      // source={require("../../../assets/images/pic5.png")}
+      style={styles.backgroundImage}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay} />
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.welcomeText}>
+            Welcome, {username ? username : "Guest"} 👋
+          </Text>
+        </View>
+
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <Text style={styles.loadingText}>Loading vehicles...</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={vehicles}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={styles.listContainer}
+          />
+        )}
+
+        <TouchableOpacity
+          style={styles.cartButton}
+          onPress={() => {
+            router.push({
+              pathname: "/cart",
+              params: { cart: JSON.stringify(cart) },
+            });
+          }}
+        >
+          <Ionicons name="cart" size={24} color="white" />
+          <Text style={styles.cartButtonText}>Cart: {cart.length}</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ImageBackground>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#ffffff",  // Change background to white
   },
-  header: {
-    backgroundColor: '#007bff',
-    padding: 20,
-    alignItems: 'center',
+  // header: {
+  //   backgroundColor: "#007BFF",  // Change header to blue
+  //   padding: 15,
+  //   borderBottomWidth: 1,
+  //   borderBottomColor: "#444",
+  // },
+  welcomeText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#fff",
   },
-  headerText: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: 'bold',
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    fontSize: 18,
+    color: "#bbb",
   },
   listContainer: {
     padding: 10,
   },
-  itemCard: {
-    backgroundColor: '#fff',
-    padding: 15,
-    marginVertical: 8,
-    borderRadius: 8,
-    shadowColor: '#000',
+  productCard: {
+    backgroundColor: "#f2f2f2",  // Lighter background for product cards
+    marginBottom: 15,
+    borderRadius: 10,
+    overflow: "hidden",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,
-    alignItems: 'center',
+    elevation: 2,
   },
-  itemImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
+  productImage: {
+    width: "100%",
+    height: 150,
   },
-  itemTitle: {
+  productInfo: {
+    padding: 10,
+  },
+  productTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+    color: "#000",  // Dark text for better contrast on light background
   },
-  itemDescription: {
+  productType: {
     fontSize: 14,
-    color: '#555',
+    color: "#666",
+    marginVertical: 5,
   },
-  itemStatus: {
+  productPrice: {
     fontSize: 16,
-    color: '#007bff',
-    marginTop: 5,
+    fontWeight: "bold",
+    color: "#EAB308",
+    marginVertical: 5,
   },
-  floatingButton: {
-    position: 'absolute',
+  productDescription: {
+    fontSize: 14,
+    color: "#333",
+    marginVertical: 5,
+  },
+  actionButtons: {
+    flexDirection: "row",
+    marginTop: 10,
+    justifyContent: "space-between",
+  },
+  addToCartButton: {
+    backgroundColor: "#EAB308",
+    padding: 10,
+    borderRadius: 5,
+    color: "#000000",
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  cartButton: {
+    flexDirection: "row",
+    backgroundColor: "#EAB308",
+    position: "absolute",
     bottom: 20,
     right: 20,
-    backgroundColor: '#007bff',
-    borderRadius: 50,
     padding: 15,
-    alignItems: 'center',
+    borderRadius: 30,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+    color: "#000000",
   },
-  floatingButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  cartButtonText: {
+    marginLeft: 5,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  header: {
+    backgroundColor: "#007BFF",  // Change header to blue
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#444",
+    marginTop: 0,  // Set top margin to 0
+  },
+  
+  backgroundImage: {
+    flex: 1,
+    opacity: 0.8,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });
-
-export default HomePage;
