@@ -5,32 +5,45 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
-const SignUp = ({ navigation }) => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+// Define navigation stack types
+type RootStackParamList = {
+  LogIn: undefined;
+  SignUp: undefined;
+  Home: { username: string };
+};
+
+type SignUpProps = NativeStackScreenProps<RootStackParamList, "SignUp">;
+
+const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
+  const [fullName, setFullName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const handleSignUp = () => {
     setLoading(true);
     setError("");
-    // Mock sign-up logic; replace with actual API call
+
+    // Mock validation logic
     setTimeout(() => {
       if (
-        fullName &&
-        email.includes("@") &&
-        password.length >= 6 &&
-        password === confirmPassword
+        fullName === "Udaya Samaranayake" &&
+        email === "test@example.com" &&
+        password === "password" &&
+        password === password
       ) {
-        alert("Sign-Up Successful");
+        // Navigate to Home page with username
+        navigation.navigate("Home", { username: fullName });
       } else {
         setError(
-          "Please provide valid details (e.g., email, password > 6 characters, and matching passwords)"
+          "Invalid credentials! Use: Full Name - Udaya Samaranayake, Email - test@example.com, Password - password."
         );
       }
       setLoading(false);
@@ -41,7 +54,7 @@ const SignUp = ({ navigation }) => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Full name"
+        placeholder="Full Name"
         value={fullName}
         onChangeText={setFullName}
       />
@@ -62,7 +75,7 @@ const SignUp = ({ navigation }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Confirm password"
+        placeholder="Confirm Password"
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         secureTextEntry
@@ -74,7 +87,7 @@ const SignUp = ({ navigation }) => {
         disabled={loading}
       >
         <Text style={styles.buttonText}>
-          {loading ? "Signing Up..." : "Sign up"}
+          {loading ? "Signing Up..." : "Sign Up"}
         </Text>
       </TouchableOpacity>
       <Text style={styles.footerText}>
@@ -102,37 +115,36 @@ const SignUp = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 },
+  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 16 },
   input: {
-    width: '100%',
+    width: "100%",
     padding: 12,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     marginBottom: 16,
     borderRadius: 4,
   },
   button: {
-    backgroundColor: '#6C63FF',
+    backgroundColor: "#6C63FF",
     padding: 12,
     borderRadius: 4,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 16,
-    width: '100%',
+    width: "100%",
   },
-  buttonText: { color: '#fff', fontSize: 16 },
-  errorText: { color: 'red', marginBottom: 16 },
+  buttonText: { color: "#fff", fontSize: 16 },
+  errorText: { color: "red", marginBottom: 16 },
   footerText: { marginTop: 16, fontSize: 14 },
-  link: { color: '#6C63FF', textDecorationLine: 'underline' },
-  socialButtonsContainer: { flexDirection: 'row', marginTop: 16 },
+  link: { color: "#6C63FF", textDecorationLine: "underline" },
+  socialButtonsContainer: { flexDirection: "row", marginTop: 16 },
   socialButton: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f5f5f5",
+    alignItems: "center",
+    justifyContent: "center",
     marginHorizontal: 8,
     elevation: 2,
   },
