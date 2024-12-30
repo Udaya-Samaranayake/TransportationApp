@@ -80,17 +80,18 @@ export default function HomePage() {
 
   const getVehicleImage = (make: string, model: string): any => {
     const images: Record<string, any> = {
-      // "Honda Civic": require("../../../assets/images/01.jpg"),
-      // "Honda Accord": require("../../../assets/images/02.jpg"),
-      // "Honda Pilot": require("../../../assets/images/03.jpg"),
-      // "Toyota Scion xA": require("../../../assets/images/04.jpg"),
-      // "Toyota Scion tC": require("../../../assets/images/05.jpg"),
-      // "Toyota Corolla": require("../../../assets/images/06.jpg"),
-      // "Ford Crown Victoria": require("../../../assets/images/07.jpg"),
-      // "Ford Focus": require("../../../assets/images/08.jpg"),
-      // "Ford Fusion": require("../../../assets/images/09.jpg"),
-      // "BMW 128i": require("../../../assets/images/10.jpg"),
+      "Honda Civic": require("../assets/images/01.jpeg"),
+      "Honda Accord": require("../assets/images/02.jpeg"),
+      "Honda Pilot": require("../assets/images/03.jpeg"),
+      "Toyota Scion xA": require("../assets/images/04.jpeg"),
+      "Toyota Scion tC": require("../assets/images/05.jpeg"),
+      "Toyota Corolla": require("../assets/images/06.jpeg"),
+      "Ford Crown Victoria": require("../assets/images/07.jpeg"),
+      "Ford Focus": require("../assets/images/08.jpeg"),
+      "Ford Fusion": require("../assets/images/09.jpeg"),
+      "BMW 128i": require("../assets/images/10.jpeg"),
     };
+    
 
     const key = `${make} ${model}`;
     return (
