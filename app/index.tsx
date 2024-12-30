@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LogIn from "@/screens/LogeInPage";
@@ -21,12 +21,13 @@ const App = () => {
           <Stack.Screen
             name="LogIn"
             component={LogIn}
-            options={{ headerShown: false }}
+            options={{ headerShown: false }} // Hides header for this screen
+            
           />
           <Stack.Screen
             name="SignUp"
             component={SignUp}
-            options={{ title: "Sign Up", headerTitleAlign: "center" }}
+            options={{ title: "Sign Up", headerTitleAlign: "center", headerShown: false }} // Hides header for this screen
           />
           <Stack.Screen
             name="Home"
@@ -34,6 +35,7 @@ const App = () => {
             options={({ route }) => ({
               title: `Welcome, ${route.params.username || "User"}`,
               headerTitleAlign: "center",
+              headerShown: false, // Hides header for this screen
             })}
           />
         </Stack.Navigator>
