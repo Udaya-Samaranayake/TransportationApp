@@ -50,6 +50,7 @@ const LogIn = ({ navigation }) => {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
+         placeholderTextColor="#000000"
       />
       <View style={styles.passwordContainer}>
         <TextInput
@@ -58,6 +59,7 @@ const LogIn = ({ navigation }) => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
+          placeholderTextColor="#000000"
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
           <FontAwesome

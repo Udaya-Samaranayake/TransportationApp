@@ -55,6 +55,7 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
         placeholder="Full Name"
         value={fullName}
         onChangeText={setFullName}
+         placeholderTextColor="#000000"
       />
       <TextInput
         style={styles.input}
@@ -63,6 +64,7 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
+         placeholderTextColor="#000000"
       />
       <TextInput
         style={styles.input}
@@ -70,6 +72,7 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+         placeholderTextColor="#000000"
       />
       <TextInput
         style={styles.input}
@@ -77,6 +80,7 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         secureTextEntry
+         placeholderTextColor="#000000"
       />
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TouchableOpacity

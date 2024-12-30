@@ -91,7 +91,6 @@ export default function HomePage() {
       "Ford Fusion": require("../assets/images/09.jpeg"),
       "BMW 128i": require("../assets/images/10.jpeg"),
     };
-    
 
     const key = `${make} ${model}`;
     return (
@@ -146,16 +145,12 @@ export default function HomePage() {
   };
 
   return (
-    <ImageBackground
-      // source={require("../../../assets/images/pic5.png")}
-      style={styles.backgroundImage}
-      resizeMode="cover"
-    >
+    <ImageBackground style={styles.backgroundImage} resizeMode="cover">
       <View style={styles.overlay} />
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.welcomeText}>
-            Welcome, {username ? username : "Guest"} 👋
+            Welcome, {username ? username : "Udaya Samaranayake"} 👋
           </Text>
         </View>
 
@@ -192,14 +187,14 @@ export default function HomePage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",  // Change background to white
+    backgroundColor: "#ffffff",
   },
-  // header: {
-  //   backgroundColor: "#007BFF",  // Change header to blue
-  //   padding: 15,
-  //   borderBottomWidth: 1,
-  //   borderBottomColor: "#444",
-  // },
+  header: {
+    backgroundColor: "#007BFF",
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#444",
+  },
   welcomeText: {
     fontSize: 20,
     fontWeight: "bold",
@@ -218,14 +213,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   productCard: {
-    backgroundColor: "#f2f2f2",  // Lighter background for product cards
+    backgroundColor: "#f2f2f2",
     marginBottom: 15,
     borderRadius: 10,
     overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
     elevation: 2,
   },
   productImage: {
@@ -238,7 +229,7 @@ const styles = StyleSheet.create({
   productTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#000",  // Dark text for better contrast on light background
+    color: "#000",
   },
   productType: {
     fontSize: 14,
@@ -265,7 +256,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#EAB308",
     padding: 10,
     borderRadius: 5,
-    color: "#000000",
   },
   buttonText: {
     fontSize: 14,
@@ -281,26 +271,12 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 30,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-    color: "#000000",
   },
   cartButtonText: {
     marginLeft: 5,
     color: "#fff",
     fontWeight: "bold",
   },
-  header: {
-    backgroundColor: "#007BFF",  // Change header to blue
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#444",
-    marginTop: 0,  // Set top margin to 0
-  },
-  
   backgroundImage: {
     flex: 1,
     opacity: 0.8,
