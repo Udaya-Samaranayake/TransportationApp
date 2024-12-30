@@ -1,27 +1,27 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image } from 'react-native';
 import axios from 'axios';
 
 // Context for managing item click count
 const ClickCountContext = createContext({ count: 0, increment: () => {} });
 
-const HomePage = ({ route }) => {
-  const { username } = route.params;
+const HomePage = () => {
+  const username = 'Udaya Samaranayake'; // Set username directly
   const [items, setItems] = useState([]);
   const { count, increment } = useContext(ClickCountContext);
 
   // Fetch items from API
-//   React.useEffect(() => {
-//     axios
-//       .get('https://fakestoreapi.com/products')
-//       .then((response) => setItems(response.data))
-//       .catch((error) => console.error(error));
-//   }, []);
+  useEffect(() => {
+    axios
+      .get('https://fakestoreapi.com/products')
+      .then((response) => setItems(response.data))
+      .catch((error) => console.error(error));
+  }, []); // This ensures that the data fetch happens only once when the component is mounted
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.itemCard}
-      onPress={increment}
+      onPress={increment} // Increment click count when an item is clicked
     >
       <Image source={{ uri: item.image }} style={styles.itemImage} />
       <Text style={styles.itemTitle}>{item.title}</Text>
@@ -32,6 +32,7 @@ const HomePage = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      {/* Header displaying username */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Welcome, {username}</Text>
       </View>
