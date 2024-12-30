@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Switch,
-  
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -18,13 +17,17 @@ const LogIn = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Function to handle Sign In logic
   const handleSignIn = () => {
     setLoading(true);
     setError("");
-    // Replace this with your authentication logic
+
+    // Simulated authentication logic
     setTimeout(() => {
       if (email === "test@example.com" && password === "password") {
         alert("Sign In Successful");
+        // Navigate to the Home page with the username
+        navigation.navigate("Home", { username: email });
       } else {
         setError("Invalid email or password");
       }
@@ -105,6 +108,7 @@ const LogIn = ({ navigation }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
