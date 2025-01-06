@@ -18,16 +18,16 @@ const LogIn = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Function to handle Sign In logic
+
   const handleSignIn = () => {
     setLoading(true);
     setError("");
 
-    // Simulated authentication logic
+  
     setTimeout(() => {
       if (email === "test@example.com" && password === "password") {
         alert("Sign In Successful");
-        // Navigate to the Home page with the username
+        
         navigation.navigate("Home", { username: email });
       } else {
         setError("Invalid email or password");
@@ -38,9 +38,9 @@ const LogIn = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
+      
       <Image
-        source={require("../assets/logo.png")} // Correct path to the logo image
+        source={require("../assets/logo.png")} 
         style={styles.logo}
       />
       <TextInput
@@ -201,8 +201,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   logo: {
-    width: 200,  // Increased width to 200
-    height: 200, // Increased height to 200
+    width: 200,  
+    height: 200, 
     marginBottom: 20,
   },
   socialButton: {

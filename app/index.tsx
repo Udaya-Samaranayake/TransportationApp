@@ -7,7 +7,7 @@ import HomePage from "@/screens/Home";
 
 const Stack = createStackNavigator();
 
-// Context for managing click counts
+
 const ClickCountContext = createContext({ count: 0, increment: () => {} });
 
 const App = () => {
@@ -21,13 +21,13 @@ const App = () => {
           <Stack.Screen
             name="LogIn"
             component={LogIn}
-            options={{ headerShown: false }} // Hides header for this screen
+            options={{ headerShown: false }} 
             
           />
           <Stack.Screen
             name="SignUp"
             component={SignUp}
-            options={{ title: "Sign Up", headerTitleAlign: "center", headerShown: false }} // Hides header for this screen
+            options={{ title: "Sign Up", headerTitleAlign: "center", headerShown: false }} 
           />
           <Stack.Screen
             name="Home"
@@ -35,7 +35,7 @@ const App = () => {
             options={({ route }) => ({
               title: `Welcome, ${route.params.username || "User"}`,
               headerTitleAlign: "center",
-              headerShown: false, // Hides header for this screen
+              headerShown: false,
             })}
           />
         </Stack.Navigator>

@@ -10,7 +10,7 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
-// Define navigation stack types
+
 type RootStackParamList = {
   LogIn: undefined;
   SignUp: undefined;
@@ -31,11 +31,11 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
     setLoading(true);
     setError("");
 
-    // Simple validation logic
+  
     setTimeout(() => {
       if (password === confirmPassword && fullName && email && password) {
-        // If valid, navigate to the SignIn page
-        navigation.navigate("LogIn"); // Navigate to SignIn screen after sign-up
+        
+        navigation.navigate("LogIn"); 
       } else {
         setError("Passwords do not match or fields are empty.");
       }
@@ -45,9 +45,9 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
+     
       <Image
-        source={require("../assets/logo.png")} // Correct relative path to your logo
+        source={require("../assets/logo.png")} 
         style={styles.logo}
       />
       <TextInput
@@ -120,8 +120,8 @@ const SignUp: React.FC<SignUpProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", alignItems: "center",backgroundColor: "#fff", padding: 16 },
   logo: {
-    width: 200, // Adjust the size as needed
-    height: 200, // Adjust the size as needed
+    width: 200, 
+    height: 200, 
     marginBottom: 20,
   },
   input: {
